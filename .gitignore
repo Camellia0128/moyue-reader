@@ -1,0 +1,31 @@
+node_modules/
+.gradle/
+**/build/
+local.properties
+.signing/
+.tools/
+dist/
+test-results/
+*.log
+# 构建产物：安装包与 Web 资源由构建流程生成，不进入版本库
+release/*.apk
+app/src/main/assets/web/
+.workbuddy/
+
+# 交付前备份的旧版安装包
+.backup/
+.build-trash/
+
+# Local credentials and machine-specific configuration
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p12
+*.pfx
+signing.properties
+.idea/
+.vscode/
+.DS_Store
+.publish/

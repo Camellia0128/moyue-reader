@@ -1,0 +1,47 @@
+name: Android CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: android-actions/setup-android@v3
+      - name: Install SDK
+        run: sdkmanager 'platforms;android-35' 'build-tools;34.0.0'
+      - run: npm ci
+      - run: npm run build:web
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - name: Browser regression
+        shell: bash
+        run: |
+          npm run dev > /tmp/moyue-server.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then break; fi
+            sleep 1
+          done
+          node tests/reader-v120.mjs
+      - name: Build and lint Android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon :app:assembleDebug :app:lintDebug --console=plain
+      - uses: actions/upload-artifact@v4
+        with:
+          name: moyue-1.2.0-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 14

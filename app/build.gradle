@@ -1,0 +1,36 @@
+plugins { id 'com.android.application' }
+
+def signingFile = rootProject.file('.signing/signing.properties')
+def signingValues = new Properties()
+if (signingFile.exists()) signingFile.withInputStream { signingValues.load(it) }
+
+android {
+    namespace 'cn.moyue.reader'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'cn.moyue.reader'
+        minSdk 26
+        targetSdk 35
+        versionCode 11
+        versionName '1.2.0'
+    }
+    signingConfigs {
+        release {
+            if (signingFile.exists()) {
+                storeFile rootProject.file('.signing/moyue-release.jks')
+                storePassword signingValues['storePassword']
+                keyAlias signingValues['keyAlias']
+                keyPassword signingValues['keyPassword']
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+        }
+    }
+    compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+    lint { abortOnError true; disable 'ObsoleteSdkInt' }
+}

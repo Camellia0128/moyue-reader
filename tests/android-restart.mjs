@@ -1,0 +1,15 @@
+import {_android} from 'playwright';
+import {execFileSync} from 'node:child_process';
+import fs from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const adb=process.env.ADB_PATH||'F:/MoyueReaderTools/sdk/platform-tools/adb.exe',serial=process.env.ANDROID_SERIAL||'emulator-5554';
+const cmd=(...args)=>execFileSync(adb,['-s',serial,...args],{encoding:'utf8',timeout:45000,windowsHide:true}).trim();
+const devices=await _android.devices({omitDriverInstall:true});let device=devices.find(d=>d.serial()===serial);let page=await(await device.webView({pkg:'cn.moyue.reader'})).page();
+await page.waitForFunction(()=>window.ReaderApp?.state.book);await page.evaluate(()=>window.ReaderApp.flush());
+const before=await page.evaluate(()=>({id:window.ReaderApp.state.book.id,filename:window.ReaderApp.state.book.filename,locator:window.ReaderApp.state.book.locator,books:window.ReaderApp.state.books.length}));await device.close();
+cmd('shell','am','force-stop','cn.moyue.reader');cmd('shell','am','start','-n','cn.moyue.reader/.MainActivity');
+device=(await _android.devices({omitDriverInstall:true})).find(d=>d.serial()===serial);page=await(await device.webView({pkg:'cn.moyue.reader'},{timeout:30000})).page();
+await page.waitForFunction(()=>window.ReaderApp?.state.book&&window.ReaderApp.state.paginator&&!window.ReaderApp.state.busy,{timeout:60000});
+const after=await page.evaluate(()=>({id:window.ReaderApp.state.book.id,filename:window.ReaderApp.state.book.filename,locator:window.ReaderApp.state.book.locator,books:window.ReaderApp.state.books.length}));
+assert.deepEqual(after,before);assert.ok((await page.locator('#flow').textContent()).includes('Android 系统文件选择器'));await device.close();
+await fs.writeFile('test-results/android-restart.json',JSON.stringify({passed:true,before,after},null,2));console.log('PASS Android force-stop and cold restart preserve the imported document, original bytes, library and reading location');

@@ -1,0 +1,37 @@
+{
+  "name": "moyue-reader",
+  "version": "1.2.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:web": "node scripts/build-web.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:ui": "node tests/reader-ui.mjs",
+    "test:extended": "node tests/browser-extended.mjs",
+    "test:android": "node tests/android-ui.mjs",
+    "dev": "node scripts/serve.mjs"
+  },
+  "dependencies": {
+    "@fontsource/noto-serif-sc": "^5.2.8",
+    "cfb": "^1.2.2",
+    "docx-preview": "^0.4.1",
+    "dompurify": "^3.3.0",
+    "fflate": "^0.8.2",
+    "html2canvas": "^1.4.1",
+    "mammoth": "^1.11.0",
+    "pdfjs-dist": "^5.4.296"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.12",
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.56.1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Camellia0128/moyue-reader.git"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

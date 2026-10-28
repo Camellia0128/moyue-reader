@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#dddddd">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' blob: 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self'; connect-src 'self' blob: data:; worker-src 'self' blob:; frame-src 'none'; object-src 'none'; base-uri 'self'">
+  <title>墨阅</title>
+  <link rel="stylesheet" href="./app.css">
+</head>
+<body>
+  <main id="app"><div class="boot"><span class="boot-mark">墨</span><strong>墨阅</strong><p>让阅读回到书页</p></div></main>
+  <div id="overlay-root"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <input type="file" id="file-picker" accept=".pdf,.epub,.docx,.doc,.txt,.md,.html,.htm,.moyue" multiple hidden>
+  <input type="file" id="dict-picker" accept=".ifo,.idx,.dict,.dz,.syn" multiple hidden>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

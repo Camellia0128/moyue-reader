@@ -1,0 +1,15 @@
+Moyue Reader / 墨阅
+Original project code: MIT License (see LICENSE).
+
+Third-party libraries and bundled Noto fonts retain their own licenses.
+The build generates THIRD-PARTY-NOTICES.txt and the APK's licenses.txt
+from installed dependencies; preserve these notices when distributing.
+
+Gradle Wrapper: Gradle, Inc. and contributors, Apache License 2.0.
+Apache POI fixtures: tests/fixtures/apache-sample.doc and apache-sample.txt,
+from Apache POI REL_5_2_0 test-data/document, Apache Software Foundation,
+Apache License 2.0. See tests/fixtures/README.md and licenses/Apache-2.0.txt.
+
+Kindle and Amazon names belong to their respective owners. No Amazon
+photographs, product screenshots, Kindle fonts, commercial dictionaries,
+or third-party ebooks are redistributed as project assets.
